@@ -3,25 +3,25 @@ import Modal from './Modal';
 import { data } from '../../../data';
 import { Fragment } from 'react';
 // reducer function
-
+const reducer = (state, action) => {};
+const defaultState = {
+	people: data,
+	isModalOpen: true,
+	modalContent: 'hello world',
+};
 const Index = () => {
 	const [name, setName] = useState('');
-	const [people, setPeople] = useState(data);
-	const [showModal, setShowModal] = useState(false);
+	const [state, dispatch] = useReducer(reducer, defaultState);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (name) {
-			setShowModal(true);
-			setPeople([...people, { id: new Date().getTime().toString(), name }]);
-			setName('');
 		} else {
-			setShowModal(true);
 		}
 	};
 	return (
 		<Fragment>
-			{showModal && <Modal />}
+			{state.isModalOpen && <Modal modalContent={state.modalContent} />}
 			<form onSubmit={handleSubmit} className="form">
 				<div>
 					<input
@@ -32,7 +32,7 @@ const Index = () => {
 				</div>
 				<button type="submit">add</button>
 			</form>
-			{people.map((person) => {
+			{state.people.map((person) => {
 				return (
 					<div key={person.id}>
 						<h4>{person.name}</h4>
